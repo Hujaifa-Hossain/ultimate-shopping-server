@@ -1,15 +1,23 @@
-const express = require('express');
-const cors = require('cors');
+require("dotenv").config();
+const express = require("express");
+const connection = require("./database/connection");
 const routes = require('./routes/route')
-require('dotenv').config()
+const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+// middleware
 app.use(cors());
 app.use(express.json());
+
+// routes
 app.use(routes)
 
+// database connection
+connection();
+
+// http server 
 app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
-})
+  console.log(`Server http://localhost:${PORT}`);
+});
