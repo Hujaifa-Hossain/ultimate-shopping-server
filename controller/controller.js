@@ -2,7 +2,10 @@ const model = require("../models/model");
 
 const post_products = (req, res) => {
   const create = new model.product({
-    name: "Apple",
+    name: "Shoe",
+    price: 105,
+    size: [7,8,9],
+    color: '#070390',
     description: "An Apple for testing",
   });
 
@@ -32,14 +35,6 @@ const get_product = async (req, res) => {
   } catch (error) {
     console.log(error)
   }
-
-
-  // const result = await carCollection
-  //     .find({
-  //       _id: ObjectId(req.params.id),
-  //     })
-  //     .toArray();
-  //   res.send(result);
 }
 
 
