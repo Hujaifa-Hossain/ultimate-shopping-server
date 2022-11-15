@@ -2,7 +2,7 @@ const routes = require("express").Router();
 const controller = require("../controller/controller");
 
 routes
-  .route("/api/product")
+  .route("/api/products")
   .post(controller.post_products)
   .get(controller.get_products);
 

@@ -1,11 +1,11 @@
-const model = require("../models/model");
+const model = require("../models/product_model");
 
 const post_products = (req, res) => {
   const create = new model.product({
     name: "Shoe",
     price: 105,
-    size: [7,8,9],
-    color: '#070390',
+    size: [7, 8, 9],
+    color: "#070390",
     description: "An Apple for testing",
   });
 
@@ -22,20 +22,19 @@ const post_products = (req, res) => {
 const get_products = async (req, res) => {
   let data = await model.product.find({});
   try {
-    res.json(data)
+    res.json(data);
   } catch (error) {
     console.log(error);
   }
 };
 
 const get_product = async (req, res) => {
-  let data = await model.product.findOne()
+  let data = await model.product.findOne();
   try {
-    res.json(data)
+    res.json(data);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
-
+};
 
 module.exports = { post_products, get_products, get_product };

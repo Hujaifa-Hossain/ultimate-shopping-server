@@ -1,7 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const connection = require("./database/connection");
-const routes = require('./routes/route')
+const productRouter = require("./routes/products");
+const userRouter = require("./routes/users");
 const cors = require("cors");
 
 const app = express();
@@ -12,12 +13,13 @@ app.use(cors());
 app.use(express.json());
 
 // routes
-app.use(routes)
+app.use(userRouter);
+app.use(productRouter);
 
 // database connection
 connection();
 
-// http server 
+// http server
 app.listen(PORT, () => {
   console.log(`Server http://localhost:${PORT}`);
 });
