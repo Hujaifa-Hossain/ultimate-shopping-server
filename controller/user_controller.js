@@ -1,12 +1,13 @@
-const user = require("../models/user_model");
-const CryptoJS = require('crypto-js');
+const User = require("../models/user_model");
+const CryptoJS = require("crypto-js");
 
-const create_user = async (req, res) => {
-  const NewUser = new user({
+// REGISTER
+const register = async (req, res) => {
+  const NewUser = new User({
     firstName: "Hujaifa",
     lastName: "Hossain",
     email: "hujaifa@gmail.com",
-    password: CryptoJS.AES.encrypt('lovehujaifa21', process.env.PASS_SECRET),
+    password: CryptoJS.AES.encrypt("lovehujaifa21", process.env.PASS_SECRET),
   });
 
   // const NUser = new user({
@@ -24,5 +25,31 @@ const create_user = async (req, res) => {
   }
 };
 
+// LOGIN
+const login = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      userName: req.body.user_name,
+    });
 
-module.exports = { create_user, }
+    !user && res.status(401).json("Wrong credential!");
+
+    const hashedPassword = CryptoJS.AES.decrypt(
+      user.password,
+      process.env.PASS_SECRET
+    ).toString(CryptoJS.enc.Utf8);
+
+    const inputPassword = req.body.password;
+
+    hashedPassword != inputPassword &&
+      res.status(401).json("Wrong credential!");
+
+    const { password, ...others } = user._doc;
+
+    res.status(200).json(...others);
+  } catch (error) {
+    res.status(500).json(err);
+  }
+};
+
+module.exports = { register, login };

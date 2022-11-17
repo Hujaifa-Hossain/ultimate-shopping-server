@@ -13,10 +13,10 @@ app.use(cors());
 app.use(express.json());
 
 // routes
-app.use(userRouter);
-app.use(productRouter);
+app.use('/api/users',userRouter);
+app.use('/api/products',productRouter);
 
-// database connection
+// database
 connection();
 
 // http server

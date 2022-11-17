@@ -1,5 +1,4 @@
 const Products = require("../models/product_model");
-const ObjectId = require('mongoose').ObjectId
 
 const post_products = async (req, res) => {
   const create = new Products({
@@ -42,16 +41,12 @@ const get_products = async (req, res) => {
 };
 
 const get_product = async (req, res) => {
-  // let data = await Products.find({
-  //   _id: ObjectId(req.params.id),
-  // })
-  // .toArray();
-  console.log(req.body)
-  // try {
-  //   // res.status(200).json(data);
-  // } catch (err) {
-  //   res.status(500).json(err);
-  // }
+  try {
+    const product = await Products.findById(req.params.id);
+    res.status(200).json(product);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 module.exports = { post_products, get_products, get_product };
