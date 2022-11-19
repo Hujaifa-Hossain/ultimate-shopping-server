@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const connection = require("./database/connection");
 const productRouter = require("./routes/product_route");
+const authRouter = require("./routes/auth_route");
 const userRouter = require("./routes/user_route");
 const cors = require("cors");
 
@@ -13,8 +14,9 @@ app.use(cors());
 app.use(express.json());
 
 // routes
-app.use('/api/users',userRouter);
-app.use('/api/products',productRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/users", userRouter);
+app.use("/api/products", productRouter);
 
 // database
 connection();
