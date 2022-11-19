@@ -50,7 +50,7 @@ const login = async (req, res) => {
 
     originalPassword != inputPassword && res.status(401).json("Wrong Password");
 
-    const accessToken = jwt.sign(
+    const token = jwt.sign(
       {
         id: user._id,
         isAdmin: user.isAdmin,
@@ -62,7 +62,7 @@ const login = async (req, res) => {
     );
 
     const { password, ...others } = user._doc;
-    res.status(200).json({ ...others, accessToken });
+    res.status(200).json({ ...others, token });
   } catch (error) {
     res.status(500).json(error);
   }
