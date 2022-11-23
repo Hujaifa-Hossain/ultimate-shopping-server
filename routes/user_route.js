@@ -1,10 +1,11 @@
-const routes = require("express").Router();
+const router = require("express").Router();
 const controller = require("../controller/user_controller");
-const { verify_authorization } = require("../controller/verify_token");
+const { verify_authorization, verify_admin } = require("../controller/verify_token");
 
-routes.route("/").get(controller.get_users);
-routes.route("/find/:id").get(controller.get_user);
+router.get("/", controller.get_users);
 
-routes.put('/:id', verify_authorization, controller.update_user)
+router.get("/:id", verify_authorization, controller.get_user);
 
-module.exports = routes;
+router.put("/:id", verify_authorization, controller.update_user);
+
+module.exports = router;

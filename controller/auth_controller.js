@@ -4,27 +4,28 @@ const jwt = require("jsonwebtoken");
 
 // REGISTER
 const register = async (req, res) => {
-  const user = new User({
-    firstName: "john",
-    lastName: "Doe",
-    email: "johndoe@gmail.com",
-    password: CryptoJS.AES.encrypt(
-      "123456",
-      process.env.PASS_SECRET
-    ).toString(),
-  });
-
-  // const newUser = new User({
-  //   userName: req.body.userName,
-  //   email: req.body.email,
+  // const user = new User({
+  //   firstName: "john",
+  //   lastName: "Doe",
+  //   email: "johndoe@gmail.com",
   //   password: CryptoJS.AES.encrypt(
-  //     req.body.password,
+  //     "123456",
   //     process.env.PASS_SECRET
   //   ).toString(),
   // });
 
+  const newUser = new User({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    password: CryptoJS.AES.encrypt(
+      req.body.password,
+      process.env.PASS_SECRET
+    ).toString(),
+  });
+
   try {
-    const saveUser = await user.save();
+    const saveUser = await newUser.save();
     res.status(201).json(saveUser);
   } catch (error) {
     res.status(500).json(error);

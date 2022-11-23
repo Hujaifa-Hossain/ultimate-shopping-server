@@ -25,7 +25,18 @@ const verify_authorization = (req, res, next) => {
   });
 };
 
+const verify_admin = (req, res, next) => {
+  verify_token(req, res, () => {
+    if (req.user.isAdmin) {
+      next();
+    } else {
+      res.status(403).json("Not allowed!");
+    }
+  });
+};
+
 module.exports = {
   verify_token,
+  verify_admin,
   verify_authorization,
 };
