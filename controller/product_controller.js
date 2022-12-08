@@ -1,34 +1,38 @@
 const Products = require("../models/product_model");
+const cloudinary = require("cloudinary").v2;
 
-const post_product = async (req, res) => {
-  const create = new Products({
-    title: req.body.title,
-    description: req.body.description,
-    // img: req.body.img,
-    category: req.body.category,
-    price: req.body.price,
-    color: req.body.color,
-    size: req.body.size,
+cloudinary.config({
+  cloud_name: "dwxbvjv8g",
+  api_key: "936244713733828",
+  api_secret: process.env.CLOUDINARY_SECRET,
+  secure: true,
+});
+
+const post_product = (req, res) => {
+  const file = req.files.img;
+
+  console.log(file);
+
+  cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
+
+    console.log(result);
+    
+    const product = new Products({
+      title: req.body.title,
+      description: req.body.description,
+      img: result.url,
+      category: req.body.category,
+      price: req.body.price,
+      color: req.body.color,
+      size: req.body.size,
+    });
+
+    product.save().then(result1 => {
+      res.status(200).json(result1)
+    }).catch(err => {
+      res.status(500).json(err.message);
+    })
   });
-
-  // let NewCreate = new Products({
-  //   title: "Winter fall shoe",
-  //   description: "A little amazing black shoe to wear in winter.",
-  //   img: ["Shoe1.jpg", "Shoe2.jpg"],
-  //   category: "Footwear",
-  //   price: 330,
-  //   color: "lightBlue",
-  //   size: [40, 41, 42],
-  // });
-
-  try {
-    const saveProduct = await create.save();
-    console.log(saveProduct);
-    res.status(200).json(create);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err.message);
-  }
 };
 
 const get_products = async (req, res) => {
@@ -45,16 +49,16 @@ const get_product = async (req, res) => {
     const product = await Products.findById(req.params.id);
     res.status(200).json(product);
   } catch (error) {
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
 };
 
 const delete_product = async (req, res) => {
   try {
     await Products.findByIdAndDelete(req.params.id);
-    res.status(200).json('Product deleted successfully!');
+    res.status(200).json("Product deleted successfully!");
   } catch (error) {
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
 };
 
